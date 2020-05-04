@@ -1,8 +1,10 @@
-package com.mxdl.okhttp3.http;
+package com.mxdl.okhttp3.ok_man;
 
 import com.google.gson.Gson;
 import com.ihsanbal.logging.Level;
 import com.ihsanbal.logging.LoggingInterceptor;
+import com.mxdl.okhttp3.ok_man.response.MyCallBack;
+import com.mxdl.okhttp3.ok_man.response.OnResponse;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -25,15 +27,15 @@ public class OkHttpManager {
     private OkHttpClient mHttpClient;
 
     private OkHttpManager() {
-        mHttpClient = new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor.Builder().setLevel(Level.BODY)
-                .log(Platform.INFO)
-                .request("request")
-                .response("reponse")
-                .build()).build();
-    }
-
-    static class OkHttpManagerHolder {
-        static OkHttpManager mHttpManager = new OkHttpManager();
+        mHttpClient = new OkHttpClient.Builder().addInterceptor(
+                new LoggingInterceptor
+                        .Builder()
+                        .setLevel(Level.BODY)
+                        .log(Platform.INFO)
+                        .request("request")
+                        .response("reponse")
+                        .build())
+                .build();
     }
 
     public static OkHttpManager getInstance() {
@@ -45,8 +47,11 @@ public class OkHttpManager {
         MyCallBack callback = new MyCallBack(response);
         callback.onStart();
         mHttpClient.newCall(
-                new Request.Builder().url(url)
-                        .post(RequestBody.create(jsonBody, MediaType.parse("application/json;charset=utf-8"))).build())
+                new Request
+                        .Builder()
+                        .url(url)
+                        .post(RequestBody.create(jsonBody, MediaType.parse("application/json;charset=utf-8")))
+                        .build())
                 .enqueue(callback);
 
     }
@@ -63,4 +68,10 @@ public class OkHttpManager {
         MyCallBack callBack = new MyCallBack(response);
         mHttpClient.newCall(request).enqueue(callBack);
     }
+
+    static class OkHttpManagerHolder {
+        static OkHttpManager mHttpManager = new OkHttpManager();
+    }
+
+
 }

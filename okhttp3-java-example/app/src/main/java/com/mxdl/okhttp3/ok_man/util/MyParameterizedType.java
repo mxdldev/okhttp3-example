@@ -1,4 +1,4 @@
-package com.mxdl.okhttp3.http;
+package com.mxdl.okhttp3.ok_man.util;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

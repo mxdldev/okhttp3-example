@@ -1,6 +1,4 @@
-package com.mxdl.okhttp3.http;
-
-import com.mxdl.okhttp3.bean.ResDTO;
+package com.mxdl.okhttp3.ok_man.response;
 
 /**
  * Description: <OnResponse><br>
@@ -12,7 +10,7 @@ import com.mxdl.okhttp3.bean.ResDTO;
 public abstract class OnResponse<T> {
     public abstract void onStart();
 
-    public abstract void onSucc(ResDTO<T> resDTO);
+    public abstract void onSucc(T t);
 
     public abstract void onFail(Exception e);
 

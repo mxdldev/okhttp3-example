@@ -1,0 +1,38 @@
+@startuml
+
+abstract class BaseCallback{
+    void onStart(Request request, int id);
+    void onFail(Call call, Exception e, int id);
+    void onSucc(T response, int id);
+    void onComplete(int id);
+}
+abstract class BaseRequest{
+    abstract Request buildRequest(RequestBody requestBody)
+}
+abstract class BaseRequestBuilder{
+    abstract RequestCall build()
+}
+
+class GetBuilder extends BaseRequestBuilder
+class PostBuilder extends BaseRequestBuilder
+
+class GetRequest extends BaseRequest
+class PostRequest extends BaseRequest
+
+abstract class MyCallback extends BaseCallback
+abstract class StringCallback extends BaseCallback
+
+class RequestCall{
+    BaseRequest mBaseRequest;
+    Request request;
+    Call call;
+    void execute(BaseCallback baseCallback)
+}
+GetRequest --> BaseRequestBuilder
+PostRequest --> BaseRequestBuilder
+
+RequestCall --> BaseRequest
+RequestCall --> BaseCallback
+
+OkHttpUtils --> RequestCall
+@enduml

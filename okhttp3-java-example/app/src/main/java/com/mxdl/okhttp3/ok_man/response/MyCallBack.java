@@ -1,5 +1,4 @@
-package com.mxdl.okhttp3.http;
-
+package com.mxdl.okhttp3.ok_man.response;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -8,13 +7,11 @@ import android.os.Message;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.mxdl.okhttp3.bean.ResDTO;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -28,11 +25,11 @@ import okhttp3.Response;
  * Update:     <br>
  */
 public class MyCallBack<T> implements Callback {
-    private OnResponse<T> mOnResponse;
     private static final int ON_START = 0;
     private static final int ON_SUCC = 1;
     private static final int ON_FAIL = 2;
     private static final int ON_COMPLETE = 3;
+    private OnResponse<T> mOnResponse;
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -46,19 +43,19 @@ public class MyCallBack<T> implements Callback {
                     if (mOnResponse != null) {
                         try {
                             String body = (String) msg.obj;
-                            Type type = mOnResponse.getClass().getGenericSuperclass();
-                            Type[] types = ((ParameterizedType) type).getActualTypeArguments();
-                            Type ty = new MyParameterizedType(ResDTO.class, new Type[]{types[0]});
-                            ResDTO<T> data = new Gson().fromJson(body, ty);
+                            //ResDTO<T> data = new Gson().fromJson(body, getType());
+                            T data = (T) new Gson().fromJson(body, getTClass());
                             mOnResponse.onSucc(data);
                         } catch (Exception e) {
                             mOnResponse.onFail(e);
                         }
+                        mOnResponse.onComplete();
                     }
                     break;
                 case ON_FAIL:
                     if (mOnResponse != null) {
                         mOnResponse.onFail(msg.obj != null ? (Exception) msg.obj : new Exception());
+                        mOnResponse.onComplete();
                     }
                     break;
                 case ON_COMPLETE:
@@ -69,6 +66,7 @@ public class MyCallBack<T> implements Callback {
             }
         }
     };
+
 
     public MyCallBack(OnResponse<T> onResponse) {
         mOnResponse = onResponse;
@@ -81,9 +79,6 @@ public class MyCallBack<T> implements Callback {
         message.obj = e;
         mHandler.sendMessage(message);
 
-        Message message1 = new Message();
-        message1.what = ON_COMPLETE;
-        mHandler.sendMessage(message1);
     }
 
     @Override
@@ -105,12 +100,7 @@ public class MyCallBack<T> implements Callback {
             message.what = ON_FAIL;
             message.obj = e;
             mHandler.sendMessage(message);
-        } finally {
-            Message message = new Message();
-            message.what = ON_COMPLETE;
-            mHandler.sendMessage(message);
         }
-
     }
 
 
@@ -125,4 +115,11 @@ public class MyCallBack<T> implements Callback {
         Class<T> tClass = (Class<T>) ((ParameterizedType) mOnResponse.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return tClass;
     }
+
+//    @NotNull
+//    private Type getType() {
+//        Type type = mOnResponse.getClass().getGenericSuperclass();
+//        Type[] types = ((ParameterizedType) type).getActualTypeArguments();
+//        return new MyParameterizedType(ResDTO.class, new Type[]{types[0]});
+//    }
 }

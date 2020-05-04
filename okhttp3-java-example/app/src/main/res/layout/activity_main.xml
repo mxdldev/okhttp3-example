@@ -17,6 +17,34 @@
         android:text="Post"
         android:textAllCaps="false"
         />
+    <Button
+        android:id="@+id/btn_get1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get1"
+        android:textAllCaps="false"
+        />
+    <Button
+        android:id="@+id/btn_post1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Post1"
+        android:textAllCaps="false"
+        />
+    <Button
+        android:id="@+id/btn_get2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get2"
+        android:textAllCaps="false"
+        />
+    <Button
+        android:id="@+id/btn_post2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Post2"
+        android:textAllCaps="false"
+        />
     <TextView
         android:id="@+id/txt_content"
         android:layout_width="match_parent"
