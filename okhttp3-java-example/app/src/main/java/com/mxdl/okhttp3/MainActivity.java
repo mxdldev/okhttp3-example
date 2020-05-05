@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 FlyHttpUtil.getInstance().post()
                         .url("http://192.168.31.105:8080/user/addUser")
                         .body(new User("aaa",111))
-                        .buildCall()
+                        .buildCall()   
                         .execute(new RequestListener<AddUserResponse>() {
                             @Override
                             public void onStart() {
