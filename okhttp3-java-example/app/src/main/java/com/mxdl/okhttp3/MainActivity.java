@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.mxdl.okhttp3.bean.User;
+import com.mxdl.okhttp3.ok_fly.FlyHttpUtil;
+import com.mxdl.okhttp3.ok_fly.callback.RequestListener;
 import com.mxdl.okhttp3.ok_man.OkHttpManager;
 import com.mxdl.okhttp3.ok_man.response.OnResponse;
 import com.mxdl.okhttp3.ok_chain.OkHttpUtils;
@@ -59,10 +61,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 addUser1();
                 break;
             case R.id.btn_get2:
-                login2();
+                //login2();
+                FlyHttpUtil.getInstance().get()
+                        .url("http://192.168.31.105:8080/user/login")
+                        .addParam("userName","mxdl")
+                        .addParam("passWord","123456")
+                        .buildCall()
+                        .execute(new RequestListener<BaseResponse>() {
+                            @Override
+                            public void onStart() {
+                                Log.v("MYTAG","onStart start...");
+                            }
+
+                            @Override
+                            public void onSucc(BaseResponse response) {
+                                Log.v("MYTAG","onSucc start...");
+                                Log.v("MYTAG",response.toString());
+                            }
+
+                            @Override
+                            public void onFail(Exception e) {
+                                Log.v("MYTAG","onFail start...");
+                                Log.v("MYTAG",e.toString());
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.v("MYTAG","onComplete start...");
+                            }
+                        });
                 break;
             case R.id.btn_post2:
-                addUser2();
+                FlyHttpUtil.getInstance().post()
+                        .url("http://192.168.31.105:8080/user/addUser")
+                        .body(new User("aaa",111))
+                        .buildCall()
+                        .execute(new RequestListener<AddUserResponse>() {
+                            @Override
+                            public void onStart() {
+                                Log.v("MYTAG","onStart...");
+                            }
+
+                            @Override
+                            public void onSucc(AddUserResponse addUserResponse) {
+                                Log.v("MYTAG","onSucc...");
+                                Log.v("MYTAG",addUserResponse.toString());
+                            }
+
+                            @Override
+                            public void onFail(Exception e) {
+                                Log.v("MYTAG","onFail...");
+                                Log.v("MYTAG",e.toString());
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.v("MYTAG","onComplete...");
+                            }
+                        });
+
+                //addUser2();
                 break;
         }
     }
