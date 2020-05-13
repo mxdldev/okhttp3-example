@@ -18,6 +18,7 @@ import javax.net.ssl.HandshakeCompletedListener;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -47,8 +48,13 @@ public class Main2Activity extends AppCompatActivity {
                 OkHttpClient httpClient = new OkHttpClient.Builder().build();
 
                 //2.创建一个request请求
-                String url = "http://192.168.0.189:8080/user/login?username=mxdl&password=123456";
-                Request loginRequst = new Request.Builder().url(url).build();
+                //String url = "http://192.168.0.189:8080/user/login?username=mxdl&password=123456";
+                String url = "http://192.168.0.189:8080/user/login";
+                HttpUrl httpUrl = HttpUrl.get(url).newBuilder()
+                        .addQueryParameter("username", "mxdl")
+                        .addQueryParameter("password", "123456")
+                        .build();
+                Request loginRequst = new Request.Builder().url(httpUrl).build();
 
                 //3.创建一个请求命令
                 Call loginCall = httpClient.newCall(loginRequst);
