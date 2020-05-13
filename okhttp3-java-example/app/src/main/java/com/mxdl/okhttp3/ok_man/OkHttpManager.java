@@ -50,7 +50,7 @@ public class OkHttpManager {
                 new Request
                         .Builder()
                         .url(url)
-                        .post(RequestBody.create(jsonBody, MediaType.parse("application/json;charset=utf-8")))
+                        .post(RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonBody))
                         .build())
                 .enqueue(callback);
 

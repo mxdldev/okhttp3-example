@@ -1,35 +1,35 @@
 package com.mxdl.okhttp3.bean;
 
 public class User {
-    private String userName;
-    private int passWord;
+    private String username;
+    private int password;
 
-    public User(String userName, int passWord) {
-        this.userName = userName;
-        this.passWord = passWord;
+    public User(String username, int password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public int getPassWord() {
-        return passWord;
+    public int getPassword() {
+        return password;
     }
 
-    public void setPassWord(int passWord) {
-        this.passWord = passWord;
+    public void setPassword(int password) {
+        this.password = password;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userName='" + userName + '\'' +
-                ", passWord=" + passWord +
+                "username='" + username + '\'' +
+                ", password=" + password +
                 '}';
     }
 }

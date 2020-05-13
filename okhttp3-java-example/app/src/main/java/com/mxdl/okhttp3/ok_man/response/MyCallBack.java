@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 
@@ -73,7 +71,7 @@ public class MyCallBack<T> implements Callback {
     }
 
     @Override
-    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+    public void onFailure( Call call,  IOException e) {
         Message message = new Message();
         message.what = ON_FAIL;
         message.obj = e;
@@ -82,7 +80,7 @@ public class MyCallBack<T> implements Callback {
     }
 
     @Override
-    public void onResponse(@NotNull Call call, @NotNull Response response) {
+    public void onResponse( Call call,  Response response) {
         try {
             if (response.isSuccessful()) {
                 Message message = new Message();
@@ -116,7 +114,7 @@ public class MyCallBack<T> implements Callback {
         return tClass;
     }
 
-//    @NotNull
+//    
 //    private Type getType() {
 //        Type type = mOnResponse.getClass().getGenericSuperclass();
 //        Type[] types = ((ParameterizedType) type).getActualTypeArguments();

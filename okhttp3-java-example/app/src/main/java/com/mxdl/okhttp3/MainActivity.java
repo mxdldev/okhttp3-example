@@ -27,7 +27,6 @@ import com.mxdl.okhttp3.ok_chain.utils.L;
 import com.mxdl.okhttp3.response.AddUserResponse;
 import com.mxdl.okhttp3.response.BaseResponse;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -165,20 +164,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         OkHttpClient client = new OkHttpClient();
         //构建一个request请求
         final Request request = new Request.Builder().url("http://192.168.31.105:8080/user/addUser")
-                .post(RequestBody.create("{\"userName\":\"mxdl\",\"passWord\":123456}", MediaType.parse("application/json;charset=utf-8")))
+                .post(RequestBody.create(MediaType.parse("application/json;charset=utf-8"),"{\"userName\":\"mxdl\",\"passWord\":123456}"))
                 .build();
         //根据request创建一个call命令
         Call call = client.newCall(request);
         //执行call命令
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            public void onFailure( Call call,  IOException e) {
                 Log.v("MYTAG", "onFail start...");
                 Log.v("MTTAG", e.toString());
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse( Call call,  Response response) throws IOException {
                 Log.v("MYTAG", "onSucc start...");
                 Log.v("MYTAG", response.body().string());
             }

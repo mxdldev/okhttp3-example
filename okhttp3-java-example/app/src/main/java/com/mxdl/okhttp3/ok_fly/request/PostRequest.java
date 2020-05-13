@@ -26,7 +26,7 @@ public class PostRequest extends BaseRequest {
     @Override
     public Request buildRequest() {
         if(body != null ){
-            builder.post(RequestBody.create(new Gson().toJson(body),MediaType.parse("application/json;charset=utf-8")));
+            builder.post(RequestBody.create(MediaType.parse("application/json;charset=utf-8"),new Gson().toJson(body)));
         }
        return builder.build();
     }

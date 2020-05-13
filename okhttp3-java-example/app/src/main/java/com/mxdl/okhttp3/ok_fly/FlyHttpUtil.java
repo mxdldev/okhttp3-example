@@ -9,13 +9,9 @@ import com.mxdl.okhttp3.ok_fly.builder.GetBuilder;
 import com.mxdl.okhttp3.ok_fly.builder.PostBuilder;
 import com.mxdl.okhttp3.ok_fly.call.RequestCall;
 import com.mxdl.okhttp3.ok_fly.callback.RequestListener;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.util.concurrent.Executor;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -64,12 +60,12 @@ public class FlyHttpUtil {
         }
         requestCall.getCall().enqueue(new Callback() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            public void onFailure( Call call,  IOException e) {
                 sendFail(e, listener);
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse( Call call,  Response response) throws IOException {
                 if (call.isCanceled()) {
                     sendFail(new IOException("request cancel"), listener);
                     return;
@@ -87,7 +83,7 @@ public class FlyHttpUtil {
         });
     }
 
-    private void sendFail(@NotNull final IOException e, final RequestListener listener) {
+    private void sendFail( final IOException e, final RequestListener listener) {
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
