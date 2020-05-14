@@ -42,6 +42,10 @@ public class OkHttpManager {
         return OkHttpManagerHolder.mHttpManager;
     }
 
+    static class OkHttpManagerHolder {
+        static OkHttpManager mHttpManager = new OkHttpManager();
+    }
+
     public <T> void post(String url, Object body, OnResponse<T> response) {
         String jsonBody = new Gson().toJson(body);
         MyCallBack callback = new MyCallBack(response);
@@ -50,7 +54,7 @@ public class OkHttpManager {
                 new Request
                         .Builder()
                         .url(url)
-                        .post(RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonBody))
+                        .post(RequestBody.create(MediaType.parse("application/json;charset=utf-8"), jsonBody))
                         .build())
                 .enqueue(callback);
 
@@ -68,10 +72,5 @@ public class OkHttpManager {
         MyCallBack callBack = new MyCallBack(response);
         mHttpClient.newCall(request).enqueue(callBack);
     }
-
-    static class OkHttpManagerHolder {
-        static OkHttpManager mHttpManager = new OkHttpManager();
-    }
-
 
 }

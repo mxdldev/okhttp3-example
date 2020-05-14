@@ -34,5 +34,9 @@ PostRequest --> BaseRequestBuilder
 RequestCall --> BaseRequest
 RequestCall --> BaseCallback
 
+class OkHttpUtils{
+   public GetBuilder get();
+   public PostBuilder post();
+}
 OkHttpUtils --> RequestCall
 @enduml

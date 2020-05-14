@@ -1,0 +1,27 @@
+@startuml
+abstract class OnResponse{
+    public abstract void onStart();
+    public abstract void onSucc(T t);
+    public abstract void onFail(Exception e);
+    public abstract void onComplete();
+}
+interface Callback {
+  void onFailure(Call call, IOException e);
+  void onResponse(Call call, Response response);
+}
+
+class MyCallBack<T> implements Callback {
+    private OnResponse<T> mOnResponse;
+    private Handler mHandler = new Handler(Looper.getMainLooper())
+    void onFailure(Call call, IOException e);
+    void onResponse(Call call, Response response);
+}
+MyCallBack *--> OnResponse
+
+class OkHttpManager {
+    private OkHttpClient mHttpClient;
+    public <T> void get(String url, HashMap<String, String> map, OnResponse<T> response)
+    public <T> void post(String url, Object body, OnResponse<T> response)
+}
+OkHttpManager o--> MyCallBack
+@enduml

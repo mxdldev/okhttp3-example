@@ -1,0 +1,50 @@
+@startuml
+abstract class BaseBuidler<T>{
+    protected String url;
+    protected HashMap<String, String> headers ;
+    protected HashMap<String, String> parsms;
+
+    public T url(String url);
+    public T addHeader(String key, String value);
+    public T addParams(String key, String value) ;
+    public abstract BaseRequest builder();
+}
+class GetBuilder extends BaseBuidler{
+    public BaseRequest builder();
+}
+class PostBuilder extends BaseBuidler{
+    private Object body;
+    public BaseRequest builder();
+    public BaseBuidler<PostBuilder> body(Object body);
+}
+
+abstract class BaseRequest {
+    protected String url;
+    protected HashMap<String, String> headers;
+    protected HashMap<String, String> parsms;
+    public BaseRequest(String url, HashMap<String, String> headers, HashMap<String, String> parsms){};
+    public RequestCall buildCall();
+    public abstract Request builderRequest();
+}
+class GetRequst extends BaseRequest
+class PostRequst extends BaseRequest
+
+GetRequst --> BaseBuidler
+PostRequst --> BaseBuidler
+
+
+class RequestCall {
+    private Call mCall;
+    private BaseRequest mBaseRequest;
+    public <T> void execute(RequestListener<T> listener);
+}
+RequestCall --> BaseRequest
+
+class OkHttpUtils{
+   private OkHttpClient okHttpClient;
+   public GetBuilder get();
+   public PostBuilder post();
+   public <T> void execute(RequestCall requestCall, final OnResponse<T> onResponse)
+}
+OkHttpUtils --> RequestCall
+@enduml

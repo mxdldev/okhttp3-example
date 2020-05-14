@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.mxdl.okhttp3.bean.User;
+import com.mxdl.okhttp3.ok_fly1.FlyHttpUtils;
+import com.mxdl.okhttp3.ok_fly1.response.OnResponse;
+import com.mxdl.okhttp3.response.AddUserResponse;
+import com.mxdl.okhttp3.response.BaseResponse;
 
 import java.io.IOException;
 
@@ -107,4 +111,69 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
     }
+
+    public void login1(View view) {
+        FlyHttpUtils.getInstance()
+                .get()
+                .url("http://192.168.0.189:8080/user/login")
+                .addParams("username", "mxdl")
+                .addParams("password", "123456")
+                .builder()
+                .buildCall().execute(new OnResponse<BaseResponse>() {
+            @Override
+            public void onStart() {
+                Log.v("MYTAG", "onStart start...");
+
+            }
+
+            @Override
+            public void onSucc(BaseResponse response) {
+                Log.v("MYTAG", "onSucc start...");
+                Log.v("MYTAG", response.toString());
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                Log.v("MYTAG", "onFail start...");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.v("MYTAG", "onComplete start...");
+            }
+        });
+    }
+
+    public void addUser1(View view) {
+        FlyHttpUtils.getInstance()
+                .post()
+                .url("http://192.168.0.189:8080/user/addUser")
+                .body(new User("zhangsan", 123456))
+                .builder()
+                .buildCall().execute(new OnResponse<AddUserResponse>() {
+            @Override
+            public void onStart() {
+                Log.v("MYTAG", "onStart start...");
+
+            }
+
+            @Override
+            public void onSucc(AddUserResponse response) {
+                Log.v("MYTAG", "onSucc start...");
+                Log.v("MYTAG", response.toString());
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                Log.v("MYTAG", "onFail start...");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.v("MYTAG", "onComplete start...");
+            }
+        });
+
+    }
+
 }

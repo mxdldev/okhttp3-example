@@ -128,32 +128,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 原生的get请求
      */
     private void login() {
-        //创建个http客户端
-        OkHttpClient client = new OkHttpClient();
-        //构建一个url
-        HttpUrl httpUrl = HttpUrl.parse("http://192.168.31.105:8080/user/login").newBuilder()
-                .addQueryParameter("userName", "mxdl")
-                .addQueryParameter("passWord", "123456").build();
-        //根据url创建一个request
-        Request loginRequest = new Request.Builder().url(httpUrl).build();
-
-        //根据request创建一个call
-        Call call = client.newCall(loginRequest);
-
-        //开启一个异步请求
-        call.enqueue(new Callback() {
+        Log.v("MYTAG", "login start...");
+        new Thread(new Runnable() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Log.v("MYTAG", "onFailure start...");
-                Log.v("MYTAG", e.toString());
-            }
+            public void run() {
+                //1.创建一个HttpClient
+                OkHttpClient httpClient = new OkHttpClient.Builder().build();
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.v("MYTAG", "onSucc start...");
-                Log.v("MYTAG", response.body().string());
+                //2.创建一个request请求
+                //String url = "http://192.168.0.189:8080/user/login?username=mxdl&password=123456";
+                String url = "http://192.168.0.189:8080/user/login";
+                HttpUrl httpUrl = HttpUrl.get(url).newBuilder()
+                        .addQueryParameter("username", "mxdl")
+                        .addQueryParameter("password", "123456")
+                        .build();
+                Request loginRequst = new Request.Builder().url(httpUrl).build();
+
+                //3.创建一个请求命令
+                Call loginCall = httpClient.newCall(loginRequst);
+
+                //4.发起一个同步的请求
+                try {
+                    Response loginResponse = loginCall.execute();
+                    Log.v("MYTAG", loginResponse.body().string());
+                } catch (IOException e) {
+                    Log.v("MYTAG", e.toString());
+                }
             }
-        });
+        }).start();
     }
 
     /**
@@ -164,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         OkHttpClient client = new OkHttpClient();
         //构建一个request请求
         final Request request = new Request.Builder().url("http://192.168.31.105:8080/user/addUser")
-                .post(RequestBody.create(MediaType.parse("application/json;charset=utf-8"),"{\"userName\":\"mxdl\",\"passWord\":123456}"))
+                .post(RequestBody.create(MediaType.parse("application/json;charset=utf-8"),"{\"username\":\"mxdl\",\"password\":123456}"))
                 .build();
         //根据request创建一个call命令
         Call call = client.newCall(request);
@@ -190,11 +192,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void login1() {
         //把登录的参数放在HashMap里
         HashMap<String, String> params = new HashMap<>();
-        params.put("userName", "mxdl");
-        params.put("passWord", "123456");
+        params.put("username", "mxdl");
+        params.put("password", "123456");
 
         //传入url，参数，回调开始请求
-        OkHttpManager.getInstance().get("http://192.168.31.105:8080/user/login", params, new OnResponse<BaseResponse>() {
+        OkHttpManager.getInstance().get("http://192.168.0.189:8080/user/login", params, new OnResponse<BaseResponse>() {
             @Override
             public void onStart() {
                 Log.v("MYTAG", "onStart...");
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         User user = new User("mxdl", 111);
 
         //传入url，User和回调开启添加一个用户的请求
-        OkHttpManager.getInstance().post("http://192.168.31.105:8080/user/addUser", user, new OnResponse<AddUserResponse>() {
+        OkHttpManager.getInstance().post("http://192.168.0.189:8080/user/addUser", user, new OnResponse<AddUserResponse>() {
             @Override
             public void onStart() {
                 Log.v("MYTAG", "onStart...");
@@ -236,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSucc(AddUserResponse resDTO) {
                 Log.v("MYTAG", "onSucc...");
-                Log.v("MYTAG", resDTO.toString());
                 Log.v("MYTAG", resDTO.toString());
             }
 
@@ -258,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void login2() {
         OkHttpUtils.get()
-                .url("http://192.168.31.105:8080/user/login")
+                .url("http://192.168.0.189:8080/user/login")
                 .addParams("userName", "mxdl")
                 .addParams("passWord", "123456")
                 .build()
@@ -291,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void addUser2() {
         OkHttpUtils.postString()
-                .url("http://192.168.31.105:8080/user/addUser")
+                .url("http://192.168.0.189:8080/user/addUser")
                 .content(new User("aaa", 111))
                 .mediaType(MediaType.parse("application/json;charset=utf-8"))
                 .build()

@@ -15,7 +15,18 @@
         android:text="异步的Post请求"
         android:onClick="addUser"
         />
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="异步的Post请求"
+        android:onClick="login1"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="异步的Post请求"
+        android:onClick="addUser1"
+        />
     <TextView
         android:id="@+id/txt_content"
         android:layout_width="wrap_content"

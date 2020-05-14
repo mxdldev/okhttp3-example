@@ -71,41 +71,34 @@ public class MyCallBack<T> implements Callback {
     }
 
     @Override
-    public void onFailure( Call call,  IOException e) {
+    public void onFailure(Call call, IOException e) {
+        sendMessage(ON_FAIL, e);
+    }
+
+    private void sendMessage(int what, Object e) {
         Message message = new Message();
-        message.what = ON_FAIL;
+        message.what = what;
         message.obj = e;
         mHandler.sendMessage(message);
-
     }
 
     @Override
-    public void onResponse( Call call,  Response response) {
+    public void onResponse(Call call, Response response) {
         try {
             if (response.isSuccessful()) {
-                Message message = new Message();
-                message.what = ON_SUCC;
                 String string = response.body().string();
-                message.obj = string;
-                mHandler.sendMessage(message);
+                sendMessage(ON_SUCC, string);
             } else {
-                Message message = new Message();
-                message.what = ON_FAIL;
-                mHandler.sendMessage(message);
+                sendMessage(ON_FAIL, new Exception("未知异常"));
             }
         } catch (Exception e) {
-            Message message = new Message();
-            message.what = ON_FAIL;
-            message.obj = e;
-            mHandler.sendMessage(message);
+            sendMessage(ON_FAIL, e);
         }
     }
 
 
     public void onStart() {
-        Message message = new Message();
-        message.what = ON_START;
-        mHandler.sendMessage(message);
+        sendMessage(ON_START, "");
     }
 
 
